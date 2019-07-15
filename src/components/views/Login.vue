@@ -54,3 +54,20 @@ export default {
   }
 };
 </script>
+
+
+<style>
+#login {
+    border: 2px solid black;
+    border-radius: 50px;
+    display: block;
+    margin: 100px auto auto auto;
+    text-align: center;
+    max-width: 600px;
+    min-width: 200px;
+}
+
+button {
+    margin: 10px 0px 20px 0px;
+}
+</style>

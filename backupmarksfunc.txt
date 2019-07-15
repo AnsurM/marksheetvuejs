@@ -1,0 +1,78 @@
+backup func marks array
+
+
+      this.fields = Object.keys(await results[0]);
+      console.log("fields: ", this.fields);
+
+      let allResults = {
+        sem1: [],
+        sem2: [],
+        sem3: [],
+        sem4: [],
+        sem5: [],
+        sem6: [],
+        sem7: [],
+        sem8: []
+      };
+
+      for (var i = 0; i < results.length; i++) {
+        var product = {
+          id: i + 1,
+          rollno: results[i].rollno,
+          subject: results[i].subcode + " --- " + results[i].subName,
+          theory: results[i].theory,
+          lab: results[i].lab,
+          total: results[i].total,
+          grade: results[i].grade,
+          gp: results[i].gp,
+          semester: results[i].semester
+        };
+        switch (true) {
+          case results[i].semester === 1: {
+            allResults.sem1.push(product);
+            break;
+          }
+          case results[i].semester === 2: {
+            allResults.sem2.push(product);
+            break;
+          }
+          case results[i].semester === 3: {
+            allResults.sem3.push(product);
+            break;
+          }
+          case results[i].semester === 4: {
+            allResults.sem4.push(product);
+            break;
+          }
+          case results[i].semester === 5: {
+            allResults.sem5.push(product);
+            break;
+          }
+          case results[i].semester === 6: {
+            allResults.sem6.push(product);
+            break;
+          }
+          case results[i].semester === 7: {
+            allResults.sem7.push(product);
+            break;
+          }
+          case results[i].semester === 8: {
+            allResults.sem8.push(product);
+            break;
+          }
+          default:
+            break;
+        }
+      }
+
+      for(let j = 0; j < Object.keys(allResults).length; j++)
+      {
+          if(Object.values(allResults)[j].length < 2)
+          {
+              let temp = allResults[Object.keys(allResults)[j].toString()];
+              temp.splice(j, 1);
+              allResults[j] = temp;
+          }
+      }
+      console.log("All results: ", allResults);
+        this.items = allResults;

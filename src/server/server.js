@@ -25,5 +25,12 @@ export default {
             return response.data;
         })
         .catch(err => console.log(err));
+    },
+    async getUsersResults(payload) {
+        return await Vue.axios.post(constants.baseUrl + constants.results, {rollNo: payload})
+        .then((response) => {
+            return response.data;
+        })
+        .catch(err => console.log(err));
     }
 }

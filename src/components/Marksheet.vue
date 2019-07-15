@@ -1,21 +1,144 @@
 <template>
-  <div>
-      <h1>User marksheet here</h1>
+  <div id="marksheetContainer">
+    <div id="userDetails">
+      <h2>{{this.getUserDetails.name}}</h2>
+      <h2>Marksheet</h2>
+    </div>
+    <div id="marksheetsHolder">
+    <div class="marksheet" v-for="(item,index) in items" :key="index">
+        <h4>Semester {{index + 1}}</h4>
+        <b-table striped hover :items="item" v-if="item.length > 2"></b-table>
+    </div>
+    </div>
   </div>
 </template>
 
 <script>
-export default {    
-    created() {
-        if(!this.checkLogin()){
-            console.log("User not signed in... redirecting to login!");
-            this.$router.push('/');
-        }        
-    },
-    methods: {
-        checkLogin() {
-            return this.$store.getters.getLoginStatus;
-        }
+import server from "../server/server";
+
+export default {
+  data() {
+    return {
+      // Note `isActive` is left out and will not appear in the rendered table
+      fields: [],
+      items: []
+    };
+  },
+  created() {
+    if (!this.checkLogin()) {
+      console.log("User not signed in... redirecting to login!");
+      this.$router.push("/");
     }
+    this.getUserMarks;
+    this.setDisplayItems;
+  },
+  methods: {
+    checkLogin() {
+      return this.$store.getters.getLoginStatus;
+    }
+  },
+  computed: {
+    getUserDetails() {
+      return this.$store.getters.getUserDetails;
+    },
+    async getUserMarks() {
+      let rollNo = {
+        rollNo: this.$store.getters.getUserDetails.rollno
+      };
+      let results = await server.getUsersResults(rollNo);
+      this.$store.dispatch("setResults", results);
+      this.items = this.$store.getters.getResults;
+      this.setDisplayItems;
+    },
+    setDisplayItems() {
+      let myResults = [...this.items];
+      let sortedResults = [];
+
+      let sem1 = [];
+      let sem2 = [];
+      let sem3 = [];
+      let sem4 = [];
+      let sem5 = [];
+      let sem6 = [];
+      let sem7 = [];
+      let sem8 = [];
+
+      myResults.forEach(result => {
+
+        switch (result.semester) {
+          case 1: {
+            sem1.push(result);
+            break;
+          }
+          case 2: {
+            sem2.push(result);
+            break;
+          }
+          case 3: {
+            sem3.push(result);
+            break;
+          }
+          case 4: {
+            sem4.push(result);
+            break;
+          }
+          case 5: {
+            sem5.push(result);
+            break;
+          }
+          case 6: {
+            sem6.push(result);
+            break;
+          }
+          case 7: {
+            sem7.push(result);
+            break;
+          }
+          case 8: {
+            sem8.push(result);
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+      });
+      sem1.length > 0 ? sortedResults.push(sem1) : null;
+      sem2.length > 0 ? sortedResults.push(sem2) : null;
+      sem3.length > 0 ? sortedResults.push(sem3) : null;
+      sem4.length > 0 ? sortedResults.push(sem4) : null;
+      sem5.length > 0 ? sortedResults.push(sem5) : null;
+      sem6.length > 0 ? sortedResults.push(sem6) : null;
+      sem7.length > 0 ? sortedResults.push(sem7) : null;
+      sem8.length > 0 ? sortedResults.push(sem8) : null;
+
+      console.log("Sorted results are: ", sortedResults);
+      this.items = sortedResults;
+    }
+  }
 };
 </script>
+
+
+<style>
+#marksheetContainer {
+  display: block;
+  margin: 100px auto;
+  max-width: 70%;
+  min-width: 50%;
+}
+
+#marksheetsHolder {
+  max-height: 500px;
+  overflow-y: scroll; 
+}
+
+.marksheet {
+  border: 2px solid black;
+  margin: 30px auto;
+}
+
+h4 {
+  margin: 10px 0px;
+}
+</style>
