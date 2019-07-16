@@ -31,6 +31,7 @@ export default {
     async login() {
       if (!this.input.username || !this.input.password) {
         this.error = "Invalid login data provided. Please check and try again.";
+        this.loading = false;
       } 
       else {
         this.loading = true;
@@ -38,11 +39,7 @@ export default {
           email: this.input.username,
           password: this.input.password
         });
-        if (!loggedIn.name)
-        {
-            this.error =  "Incorrect login data provided. Please check and try again.";
-        }
-        else
+        if (loggedIn.name)
         {
             this.loading = false;
             const result = this.$store.dispatch('setLoginData', {isLoggedIn: true, ...loggedIn});
@@ -50,6 +47,11 @@ export default {
                 if(loggedIn.name == 'Administrator') this.$router.push('/admin');
                 else this.$router.push('/marksheet');
             }
+        }
+        else
+        {
+            this.error = loggedIn;
+            this.loading = false;
         }
       }
     }

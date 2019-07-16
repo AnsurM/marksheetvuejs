@@ -27,10 +27,10 @@ export default {
     };
   },
   created() {
-    if (!this.checkLogin()) {
-      console.log("User not signed in... redirecting to login!");
-      this.$router.push("/");
-    }
+    // if (!this.checkLogin()) {
+    //   console.log("User not signed in... redirecting to login!");
+    //   this.$router.push("/");
+    // }
     this.getUserMarks;
     this.setDisplayItems;
   },

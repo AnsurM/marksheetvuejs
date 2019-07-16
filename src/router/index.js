@@ -5,7 +5,19 @@ import Login from '@/components/Login'
 import RollNoList from '@/components/RollNoList'
 import AdminPanel from '@/components/AdminPanel'
 
+import {store} from '../store/store';
+
 Vue.use(Router)
+
+let checkAccessState = () => store.getters.getLoginStatus;
+// let beforeEnter = (to, from, next) => {
+//   if(!checkAccessState()){
+//     next('/');
+//   }
+//   else{
+//     next(to);
+//   }
+// };
 
 export default new Router({
   mode: 'history',
@@ -18,11 +30,27 @@ export default new Router({
     {
       path: '/marksheet',
       name: 'Marksheet',
+      beforeEnter: (to, from, next) => {
+        if(checkAccessState()){
+          next('/marksheet');
+        }
+        else{
+          next('/');
+        }
+     },
       component: Marksheet
     },
     {
       path: '/admin',
       name: 'AdminPanel',
+      beforeEnter: (to, from, next) => {
+        if(checkAccessState()){
+          next('/admin');
+        }
+        else{
+          next('/');
+        }
+     },
       component: AdminPanel
     },
     {

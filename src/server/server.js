@@ -11,12 +11,13 @@ export default {
             ...payload
         })
         .then(function (response) {
+            console.log(response.data)
             delete response.data.hash;
             return (response.data);
         })
         .catch(function (error) {
-            console.log(err);
-            return err;
+            // console.log('err: ', error);
+            return ('Incorrect email/password provided.');
         });        
     },
     async getUsersInfo() {
@@ -34,6 +35,13 @@ export default {
     },
     async getUsersResults(payload) {
         return await Vue.axios.post(constants.baseUrl + constants.results, {rollNo: payload})
+        .then((response) => {
+            return response.data;
+        })
+        .catch(err => console.log(err));
+    },
+    async uploadResult(payload) {
+        return await Vue.axios.put(constants.baseUrl + constants.uploadResult, payload)
         .then((response) => {
             return response.data;
         })

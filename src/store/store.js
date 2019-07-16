@@ -63,7 +63,7 @@ export const store = new Vuex.Store({
         setLoginData(context, payload) {
             console.log("setLoginData invoked with: ", payload);
 
-            if(payload.isLoggedIn == undefined || payload.rollno.length < 1)
+            if(payload.isLoggedIn == undefined || (payload.rollno && payload.rollno.length < 1))
             return Promise.reject('Invalid data passed. Please try again.');
 
             context.commit('setLoginData', payload);
