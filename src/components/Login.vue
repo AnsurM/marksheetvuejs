@@ -2,6 +2,8 @@
   <div id="login">
     <h1>Login</h1>
     <input type="text" name="username" v-model="input.username" placeholder="Username" />
+    <br />
+    <br />
     <input type="password" name="password" v-model="input.password" placeholder="Password" />
     <br />
     <br />
@@ -12,8 +14,7 @@
 </template>
 
 <script>
-import server from "../../server/server";
-import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
+import server from "../server/server";
 
 export default {
   data() {
@@ -46,7 +47,8 @@ export default {
             this.loading = false;
             const result = this.$store.dispatch('setLoginData', {isLoggedIn: true, ...loggedIn});
             if(await result === true){
-                this.$router.push('/marksheet');
+                if(loggedIn.name == 'Administrator') this.$router.push('/admin');
+                else this.$router.push('/marksheet');
             }
         }
       }
@@ -61,7 +63,7 @@ export default {
     border: 2px solid black;
     border-radius: 50px;
     display: block;
-    margin: 100px auto auto auto;
+    margin: 200px auto auto auto;
     text-align: center;
     max-width: 600px;
     min-width: 200px;

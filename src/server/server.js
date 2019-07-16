@@ -19,12 +19,18 @@ export default {
             return err;
         });        
     },
-    async getUsersInfo(payload) {
+    async getUsersInfo() {
         return await Vue.axios.post(constants.baseUrl + constants.rollNo)
         .then((response) => {
             return response.data;
         })
         .catch(err => console.log(err));
+    },
+    async getRollNoList() {
+        const filtered = await this.getUsersInfo();
+        const myfiltered = filtered.map(user => (user.rollno + ' - ' + user.name))  ;
+        myfiltered.splice(0,1);
+        return await myfiltered;
     },
     async getUsersResults(payload) {
         return await Vue.axios.post(constants.baseUrl + constants.results, {rollNo: payload})

@@ -11,7 +11,12 @@ export const store = new Vuex.Store({
             name: null,
             email: null    
         },
-        results: null
+        results: null,
+        admin: {
+            adminId: null,
+            adminName: null
+        },
+        rollNoList: []
     },
     getters: {
         getLoginStatus (state) {
@@ -25,6 +30,9 @@ export const store = new Vuex.Store({
         },
         getResults(state) {
             return state.results;
+        },
+        getRollNoList(state) {
+            return state.rollNoList;
         }
     },
     mutations: {
@@ -35,6 +43,20 @@ export const store = new Vuex.Store({
         setResults(state, payload)
         {
             state.results = payload;
+        },
+        setRollNoList(state, payload) {
+            state.rollNoList = payload;
+        },
+        logOut(state) {
+            state = {
+                user: {
+                    isLoggedIn: false,
+                    rollno: null,
+                    name: null,
+                    email: null    
+                },
+                results: null
+            }        
         }
     },
     actions : {
@@ -57,6 +79,20 @@ export const store = new Vuex.Store({
             {
                 return Promise.reject('Invalid marks object received.');
             }
+        },
+        setRollNoList({commit}, payload) {
+            console.log('setRollNoList initiated with: ', payload);
+            if(payload.length) {
+                commit('setRollNoList', payload);
+                return Promise.resolve(payload);                
+            }
+            else {
+                return Promise.reject('Invalid payload passed.');
+            }
+        },
+        logOut({commit}) {
+            console.log("Logout action initiated.");
+            commit('logOut');
         }
     }
 })

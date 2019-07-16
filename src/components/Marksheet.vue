@@ -3,9 +3,11 @@
     <div id="userDetails">
       <h2>{{this.getUserDetails.name}}</h2>
       <h2>Marksheet</h2>
+      <button id='logoutButton' @click='this.logOutUser' >Log Out</button>
     </div>
     <div id="marksheetsHolder">
     <div class="marksheet" v-for="(item,index) in items" :key="index">
+        <hr >
         <h4>Semester {{index + 1}}</h4>
         <b-table striped hover :items="item" v-if="item.length > 2"></b-table>
     </div>
@@ -35,6 +37,10 @@ export default {
   methods: {
     checkLogin() {
       return this.$store.getters.getLoginStatus;
+    },
+    logOutUser() {
+      this.$store.dispatch('logOut');
+      this.$router.push('/');
     }
   },
   computed: {
@@ -120,7 +126,8 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
+
 #marksheetContainer {
   display: block;
   margin: 100px auto;
@@ -129,16 +136,28 @@ export default {
 }
 
 #marksheetsHolder {
-  max-height: 500px;
+  margin: 50px auto;
+  max-height: 550px;
   overflow-y: scroll; 
 }
 
 .marksheet {
-  border: 2px solid black;
+  /* border: 2px solid black; */
   margin: 30px auto;
 }
 
 h4 {
   margin: 10px 0px;
+}
+
+hr {
+width: 80%;
+height: 2px;
+margin-left: auto;
+margin-right: auto;
+background-color:#666;
+border: 0 none;
+margin-top: 50px;
+margin-bottom:20px;
 }
 </style>
