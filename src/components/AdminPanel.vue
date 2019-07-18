@@ -20,7 +20,7 @@
             id="input-2"
             v-model="form.subjectCode"
             required
-            placeholder="Enter subject code here e.g 'BSCS - 302'"
+            placeholder="Enter subject code here e.g 'BSCS-302'"
           ></b-form-input>
         </b-form-group>
 
@@ -44,10 +44,13 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button type="submit" variant="success">Submit</b-button>
         <b-button type="reset" variant="danger">Reset</b-button>
       </b-form>
     </div>
+    <b-button variant="warning" @click="onClickRollNoList">Fetch Roll No List</b-button>
+    <br >
+    <b-button type="submit" variant="danger" @click="onClickLogOut">Log Out</b-button>
   </div>
 </template>
 
@@ -64,7 +67,7 @@ export default {
         lab: null
       },
       rollNos: [{ text: "Select One", value: null }, "Loading options...."],
-      show: true,
+      show: true
     };
   },
   mounted() {
@@ -92,7 +95,8 @@ export default {
       });
     },
     async pushResult() {
-      let calcTotal = parseInt(this.form.theory, 10) + parseInt(this.form.lab, 10);
+      let calcTotal =
+        parseInt(this.form.theory, 10) + parseInt(this.form.lab, 10);
       let calcGrade = "";
       let calcGP = 0.0;
 
@@ -139,34 +143,41 @@ export default {
       }
 
       let result = {
-          rollno: this.form.rollNo,
-          subcode: this.form.subjectCode,
-          theory: this.form.theory,
-          lab: this.form.lab,
-          total: calcTotal,
-          grade: calcGrade,
-          gp: calcGP
-      }
+        rollno: this.form.rollNo,
+        subcode: this.form.subjectCode,
+        theory: this.form.theory,
+        lab: this.form.lab,
+        total: calcTotal,
+        grade: calcGrade,
+        gp: calcGP
+      };
 
-        const uploadStatus = await server.uploadResult(result);
-        console.log('upload Result: ', uploadStatus);
+      console.log("Uploading result", result);
+      const uploadStatus = await server.uploadResult(result);
+      console.log("upload Result: ", uploadStatus);
 
-    //   total: this.state.total,
-    //   grade: this.state.grade,
-    //   gp: this.state.gp 
-
+      //   total: this.state.total,
+      //   grade: this.state.grade,
+      //   gp: this.state.gp
+    },
+    onClickRollNoList() {
+      this.$router.push("/admin/rollNoList");
+    },
+    onClickLogOut() {
+      this.$store.dispatch('logOut');
+      this.$router.push('/');
     }
   },
   computed: {
     async getRollNoList() {
-      const list = await server.getRollNoList();
-      this.rollNos = [
-        {
-          text: "Select One",
-          value: null
-        },
-        ...list
-      ];
+        const list = await server.getRollNoList();
+        this.rollNos = [
+          {
+            text: "Select One",
+            value: null
+          },
+          ...list
+        ];
     }
   }
 };
@@ -184,7 +195,13 @@ export default {
 
 #inputForm {
   display: block;
+  font-weight: 500;
+  font-size: 20px;
+  color: #88176a;
   max-width: 25%;
   margin: 30px auto;
+  padding: 20px;
+  border: 2px solid green;
+  border-radius: 10px;
 }
 </style>

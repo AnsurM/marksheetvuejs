@@ -2,6 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import * as constants from './constants';
+import {store} from '../store/store';
 
 Vue.use(VueAxios, axios)
 
@@ -11,7 +12,7 @@ export default {
             ...payload
         })
         .then(function (response) {
-            console.log(response.data)
+            // console.log(response.data)
             delete response.data.hash;
             return (response.data);
         })
@@ -21,6 +22,7 @@ export default {
         });        
     },
     async getUsersInfo() {
+        console.log('server get info called.');
         return await Vue.axios.post(constants.baseUrl + constants.rollNo)
         .then((response) => {
             return response.data;
@@ -28,8 +30,7 @@ export default {
         .catch(err => console.log(err));
     },
     async getRollNoList() {
-        const filtered = await this.getUsersInfo();
-        const myfiltered = filtered.map(user => (user.rollno + ' - ' + user.name))  ;
+        const myfiltered = (await this.getUsersInfo()).map(user => (user.rollno + ' - ' + user.name))  ;
         myfiltered.splice(0,1);
         return await myfiltered;
     },

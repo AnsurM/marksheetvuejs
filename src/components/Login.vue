@@ -1,13 +1,33 @@
 <template>
   <div id="login">
-    <h1>Login</h1>
-    <input type="text" name="username" v-model="input.username" placeholder="Username" />
-    <br />
-    <br />
-    <input type="password" name="password" v-model="input.password" placeholder="Password" />
-    <br />
-    <br />
-    <button type="button" v-on:click="login()">Login</button>
+
+    <div id="loginForm">
+      <h1>Login</h1>
+
+      <b-form @submit="login" @reset="onReset">
+        <b-form-group id="input-group-1" label="Username:" label-for="input-1">
+          <b-form-input
+            id="input-1"
+            v-model="input.username"
+            :options="rollNos"
+            required
+            placeholder="Enter username here"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group id="input-group-2" label="Password: " label-for="input-2">
+          <b-form-input
+            id="input-2"
+            type="password"
+            v-model="input.password"
+            required
+            placeholder="Enter password here"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-button type="submit" variant="success">Login</b-button>
+      </b-form>
+    </div>
     <p v-if="this.error">{{this.error}}</p>
     <p v-if='this.loading'>Loading...</p>
     </div>
@@ -54,7 +74,25 @@ export default {
             this.loading = false;
         }
       }
-    }
+    },
+    onSubmit(evt) {
+      evt.preventDefault();
+      this.form.rollNo = parseInt(this.form.rollNo);
+    },
+    onReset(evt) {
+      evt.preventDefault();
+      // Reset our form values
+      this.input = {
+        username: null,
+        password: null
+      };
+      // Trick to reset/clear native browser form validation state
+      this.show = false;
+      this.$nextTick(() => {
+        this.show = true;
+      });
+    },
+
   }
 };
 </script>
@@ -62,13 +100,27 @@ export default {
 
 <style>
 #login {
-    border: 2px solid black;
-    border-radius: 50px;
     display: block;
     margin: 200px auto auto auto;
     text-align: center;
     max-width: 600px;
-    min-width: 200px;
+    min-width: 400px;
+}
+
+#loginForm {
+  display: block;
+  font-weight: 500;
+  font-size: 20px;
+  color: #88176a;
+  max-width: 80%;
+  margin: 30px auto;
+  padding: 20px;
+  border: 2px solid green;
+  border-radius: 10px;
+}
+
+#loginForm > h1 {
+  margin: 10px auto 30px auto;
 }
 
 button {

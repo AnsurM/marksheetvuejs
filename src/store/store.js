@@ -9,7 +9,7 @@ export const store = new Vuex.Store({
             isLoggedIn: false,
             rollno: null,
             name: null,
-            email: null    
+            email: null
         },
         results: null,
         admin: {
@@ -19,7 +19,7 @@ export const store = new Vuex.Store({
         rollNoList: []
     },
     getters: {
-        getLoginStatus (state) {
+        getLoginStatus(state) {
             return state.user.isLoggedIn;
         },
         getUserId(state) {
@@ -40,8 +40,7 @@ export const store = new Vuex.Store({
             state.user = payload;
             return state.user
         },
-        setResults(state, payload)
-        {
+        setResults(state, payload) {
             state.results = payload;
         },
         setRollNoList(state, payload) {
@@ -53,45 +52,49 @@ export const store = new Vuex.Store({
                     isLoggedIn: false,
                     rollno: null,
                     name: null,
-                    email: null    
+                    email: null
                 },
-                results: null
-            }        
-        }
+                results: null,
+                admin: {
+                    adminId: null,
+                    adminName: null
+                },
+                rollNoList: []
+            }
+        },
     },
-    actions : {
+    actions: {
         setLoginData(context, payload) {
-            console.log("setLoginData invoked with: ", payload);
+            // console.log("setLoginData invoked with: ", payload);
 
-            if(payload.isLoggedIn == undefined || (payload.rollno && payload.rollno.length < 1))
-            return Promise.reject('Invalid data passed. Please try again.');
+            if (payload.isLoggedIn == undefined || (payload.rollno && payload.rollno.length < 1))
+                return Promise.reject('Invalid data passed. Please try again.');
 
             context.commit('setLoginData', payload);
             return Promise.resolve(true);
         },
         setResults(context, payload) {
-            console.log("setResults action initiated with: ", payload);
-            if(payload.length > 0) {
+            // console.log("setResults action initiated with: ", payload);
+            if (payload.length > 0) {
                 context.commit('setResults', payload);
                 return Promise.resolve(true);
             }
-            else
-            {
+            else {
                 return Promise.reject('Invalid marks object received.');
             }
         },
-        setRollNoList({commit}, payload) {
-            console.log('setRollNoList initiated with: ', payload);
-            if(payload.length) {
+        setRollNoList({ commit }, payload) {
+            // console.log('setRollNoList initiated with: ', payload);
+            if (payload.length) {
                 commit('setRollNoList', payload);
-                return Promise.resolve(payload);                
+                return Promise.resolve(payload);
             }
             else {
                 return Promise.reject('Invalid payload passed.');
             }
         },
-        logOut({commit}) {
-            console.log("Logout action initiated.");
+        logOut({ commit }) {
+            // console.log("Logout action initiated.");
             commit('logOut');
         }
     }

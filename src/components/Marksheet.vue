@@ -118,7 +118,7 @@ export default {
       sem7.length > 0 ? sortedResults.push(sem7) : null;
       sem8.length > 0 ? sortedResults.push(sem8) : null;
 
-      console.log("Sorted results are: ", sortedResults);
+      // console.log("Sorted results are: ", sortedResults);
       this.items = sortedResults;
     }
   }
@@ -146,7 +146,7 @@ export default {
   margin: 30px auto;
 }
 
-h4 {
+.marksheet > h4 {
   margin: 10px 0px;
 }
 

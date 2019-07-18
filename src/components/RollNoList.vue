@@ -4,6 +4,7 @@
         <div id="rollNos">
             <b-table striped hover :items="items" v-if="items.length > 0"></b-table>
         </div>
+        <b-button variant="warning" @click='onClickGoBack'>Back To Admin Panel</b-button>
     </div>    
 </template>
 
@@ -25,7 +26,12 @@ export default {
     },
     methods: {
         async getRollNoList() {
-            const rollNoList = await server.getUsersInfo();
+            const rollNoList = 
+            this.$store.getters.getRollNoList.length 
+            ?
+            this.$store.getters.getRollNoList
+            :
+            await server.getUsersInfo();
             rollNoList.forEach(user => {
                 if(user.rollno == 0)
                 {
@@ -33,6 +39,9 @@ export default {
                 }
             })
             this.items = await this.$store.dispatch('setRollNoList', rollNoList);
+        },
+        onClickGoBack() {
+            this.$router.go(-1);
         }
     },
     computed: {

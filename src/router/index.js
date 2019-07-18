@@ -32,7 +32,7 @@ export default new Router({
       name: 'Marksheet',
       beforeEnter: (to, from, next) => {
         if(checkAccessState()){
-          next('/marksheet');
+          next();
         }
         else{
           next('/');
@@ -45,7 +45,7 @@ export default new Router({
       name: 'AdminPanel',
       beforeEnter: (to, from, next) => {
         if(checkAccessState()){
-          next('/admin');
+          next();
         }
         else{
           next('/');
