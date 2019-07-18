@@ -4,22 +4,15 @@ import Marksheet from '@/components/Marksheet'
 import Login from '@/components/Login'
 import RollNoList from '@/components/RollNoList'
 import AdminPanel from '@/components/AdminPanel'
+import RegisterStudent from '@/components/RegisterStudent'
 
 import {store} from '../store/store';
 
 Vue.use(Router)
 
 let checkAccessState = () => store.getters.getLoginStatus;
-// let beforeEnter = (to, from, next) => {
-//   if(!checkAccessState()){
-//     next('/');
-//   }
-//   else{
-//     next(to);
-//   }
-// };
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -30,27 +23,11 @@ export default new Router({
     {
       path: '/marksheet',
       name: 'Marksheet',
-      beforeEnter: (to, from, next) => {
-        if(checkAccessState()){
-          next();
-        }
-        else{
-          next('/');
-        }
-     },
       component: Marksheet
     },
     {
       path: '/admin',
       name: 'AdminPanel',
-      beforeEnter: (to, from, next) => {
-        if(checkAccessState()){
-          next();
-        }
-        else{
-          next('/');
-        }
-     },
       component: AdminPanel
     },
     {
@@ -58,5 +35,28 @@ export default new Router({
       name: 'RollNoList',
       component: RollNoList
     },
+    {
+      path: '/admin/registerstudent',
+      name: 'Register New Student',
+      component: RegisterStudent
+    },
   ]
 })
+
+router.beforeEach((to,from,next) => {
+  if(to.path != '/')
+  {
+    if(checkAccessState()){
+      next();
+    }
+    else{
+      next('/');
+    }  
+  }
+  else
+  {
+    next();
+  }
+})
+
+export default router;

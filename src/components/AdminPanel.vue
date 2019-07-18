@@ -49,6 +49,8 @@
       </b-form>
     </div>
     <b-button variant="warning" @click="onClickRollNoList">Fetch Roll No List</b-button>
+    <b-button variant="warning" @click="() => this.$router.push('/admin/registerstudent')">Register New Student</b-button>
+    <br >
     <br >
     <b-button type="submit" variant="danger" @click="onClickLogOut">Log Out</b-button>
   </div>

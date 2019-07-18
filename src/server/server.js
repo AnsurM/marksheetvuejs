@@ -47,5 +47,12 @@ export default {
             return response.data;
         })
         .catch(err => console.log(err));
+    },
+    async registerNewStudent({email, name, password}) {
+        return await Vue.axios.post(constants.baseUrl + constants.register, {email, name, password})
+        .then((response) => {
+            return response.data;
+        })
+        .catch(err => console.log(err));
     }
 }

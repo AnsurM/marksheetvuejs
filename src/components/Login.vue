@@ -1,6 +1,5 @@
 <template>
   <div id="login">
-
     <div id="loginForm">
       <h1>Login</h1>
 
@@ -9,7 +8,6 @@
           <b-form-input
             id="input-1"
             v-model="input.username"
-            :options="rollNos"
             required
             placeholder="Enter username here"
           ></b-form-input>
@@ -27,10 +25,11 @@
 
         <b-button type="submit" variant="success">Login</b-button>
       </b-form>
+
+      <p v-if="this.error">{{this.error}}</p>
+      <p v-if="this.loading">Loading...</p>
     </div>
-    <p v-if="this.error">{{this.error}}</p>
-    <p v-if='this.loading'>Loading...</p>
-    </div>
+  </div>
 </template>
 
 <script>
@@ -48,30 +47,30 @@ export default {
     };
   },
   methods: {
-    async login() {
+    async login(e) {
+      e.preventDefault();
       if (!this.input.username || !this.input.password) {
         this.error = "Invalid login data provided. Please check and try again.";
         this.loading = false;
-      } 
-      else {
+      } else {
         this.loading = true;
         const loggedIn = await server.validateUserLogin({
           email: this.input.username,
           password: this.input.password
         });
-        if (loggedIn.name)
-        {
-            this.loading = false;
-            const result = this.$store.dispatch('setLoginData', {isLoggedIn: true, ...loggedIn});
-            if(await result === true){
-                if(loggedIn.name == 'Administrator') this.$router.push('/admin');
-                else this.$router.push('/marksheet');
-            }
-        }
-        else
-        {
-            this.error = loggedIn;
-            this.loading = false;
+        if (loggedIn.name) {
+          this.loading = false;
+          const result = this.$store.dispatch("setLoginData", {
+            isLoggedIn: true,
+            ...loggedIn
+          });
+          if ((await result) === true) {
+            if (loggedIn.name == "Administrator") this.$router.push("/admin");
+            else this.$router.push("/marksheet");
+          }
+        } else {
+          this.error = loggedIn;
+          this.loading = false;
         }
       }
     },
@@ -91,8 +90,7 @@ export default {
       this.$nextTick(() => {
         this.show = true;
       });
-    },
-
+    }
   }
 };
 </script>
@@ -100,11 +98,11 @@ export default {
 
 <style>
 #login {
-    display: block;
-    margin: 200px auto auto auto;
-    text-align: center;
-    max-width: 600px;
-    min-width: 400px;
+  display: block;
+  margin: 200px auto auto auto;
+  text-align: center;
+  max-width: 600px;
+  min-width: 400px;
 }
 
 #loginForm {
@@ -124,6 +122,6 @@ export default {
 }
 
 button {
-    margin: 10px 0px 20px 0px;
+  margin: 10px 0px 20px 0px;
 }
 </style>

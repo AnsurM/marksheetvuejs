@@ -6,10 +6,13 @@
       <button id='logoutButton' @click='this.logOutUser' >Log Out</button>
     </div>
     <div id="marksheetsHolder">
-    <div class="marksheet" v-for="(item,index) in items" :key="index">
-        <hr >
-        <h4>Semester {{index + 1}}</h4>
-        <b-table striped hover :items="item" v-if="item.length > 2"></b-table>
+    <div v-if="!this.items">
+      <h2>Getting data....</h2>
+    </div>
+    <div v-else class="marksheet" v-for="(item,index) in items" :key="index">
+          <hr >
+          <h4>Semester {{index + 1}}</h4>
+          <b-table striped hover :items="item" v-if="item.length"></b-table>
     </div>
     </div>
   </div>
@@ -23,7 +26,7 @@ export default {
     return {
       // Note `isActive` is left out and will not appear in the rendered table
       fields: [],
-      items: []
+      items: false
     };
   },
   created() {
@@ -57,6 +60,9 @@ export default {
       this.setDisplayItems;
     },
     setDisplayItems() {
+
+      if(Array.isArray(this.items))
+      {
       let myResults = [...this.items];
       let sortedResults = [];
 
@@ -109,17 +115,22 @@ export default {
           }
         }
       });
-      sem1.length > 0 ? sortedResults.push(sem1) : null;
-      sem2.length > 0 ? sortedResults.push(sem2) : null;
-      sem3.length > 0 ? sortedResults.push(sem3) : null;
-      sem4.length > 0 ? sortedResults.push(sem4) : null;
-      sem5.length > 0 ? sortedResults.push(sem5) : null;
-      sem6.length > 0 ? sortedResults.push(sem6) : null;
-      sem7.length > 0 ? sortedResults.push(sem7) : null;
-      sem8.length > 0 ? sortedResults.push(sem8) : null;
+        sem1.length > 0 ? sortedResults.push(sem1) : [];
+        sem2.length > 0 ? sortedResults.push(sem2) : [];
+        sem3.length > 0 ? sortedResults.push(sem3) : [];
+        sem4.length > 0 ? sortedResults.push(sem4) : [];
+        sem5.length > 0 ? sortedResults.push(sem5) : [];
+        sem6.length > 0 ? sortedResults.push(sem6) : [];
+        sem7.length > 0 ? sortedResults.push(sem7) : [];
+        sem8.length > 0 ? sortedResults.push(sem8) : [];
 
-      // console.log("Sorted results are: ", sortedResults);
-      this.items = sortedResults;
+        // console.log("Sorted results are: ", sortedResults);
+        this.items = sortedResults.length > 0 ? sortedResults : [];
+      }
+      else
+      {
+        this.items = false;
+      }
     }
   }
 };
